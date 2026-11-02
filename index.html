@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>VGN Cinemas Grandly</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>
+:root{--bg:#060a1f;--card:#0f1a45;--line:#26397a;--tx:#eef2ff;--mu:#9fb0e0;--gold:#e8b84a;--red:#c8283c;color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font-family:Georgia,'Times New Roman',serif}
+button,input,select{font:inherit}
+.btn{background:linear-gradient(135deg,#f3cd6a,#c8922a);color:#1a1205;border:0;padding:10px 20px;border-radius:8px;font-weight:700;cursor:pointer}
+.btn.o{background:none;border:1px solid var(--gold);color:var(--gold)}.btn:disabled{opacity:.4;cursor:not-allowed}
+input,select{width:100%;padding:10px;margin:6px 0 12px;background:#091033;border:1px solid var(--line);border-radius:8px;color:var(--tx)}
+label{font-size:13px;color:var(--mu)}
+.wrap{max-width:1000px;margin:0 auto;padding:16px}
+.top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;border-bottom:1px solid var(--line);padding:12px 16px;background:#09112e}
+.logo{font-size:22px;color:var(--gold);letter-spacing:2px;font-weight:700}
+.hero{position:relative;height:100vh;min-height:520px;overflow:hidden}
+.hero svg{position:absolute;inset:0;width:100%;height:100%;transition:opacity 1.2s}
+.hero .ov{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;background:radial-gradient(#0008,#000d);padding:20px}
+.hero h1{font-size:clamp(34px,8vw,84px);margin:0;color:var(--gold);letter-spacing:6px;text-shadow:0 0 30px #e8b84a88}
+.hero p{font-size:clamp(14px,2.4vw,22px);color:#ddd;letter-spacing:4px;margin:10px 0 28px}
+.modal{position:fixed;inset:0;background:#000b;display:flex;align-items:center;justify-content:center;z-index:9;padding:16px}
+.box{background:var(--card);border:1px solid var(--gold);border-radius:14px;padding:26px;max-width:420px;width:100%;text-align:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:16px}
+.mv{background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden;cursor:pointer}
+.mv:hover{border-color:var(--gold)}.mv .ps{height:230px;background-size:cover;background-position:center;display:flex;align-items:flex-end;padding:10px;font-size:20px;font-weight:700}
+.mv .in{padding:10px;font-size:13px;color:var(--mu)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px;margin:12px 0}
+.chip{display:inline-block;padding:6px 12px;margin:4px;border:1px solid var(--gold);border-radius:20px;color:var(--gold);cursor:pointer;background:none}
+.chip.on{background:var(--gold);color:#111}.chip:disabled{opacity:.35;cursor:not-allowed}
+.tag{font-size:11px;border:1px solid var(--mu);padding:2px 6px;border-radius:4px;margin-right:6px;color:var(--mu)}
+.bal{background:#16204f;border:1px solid var(--gold);color:var(--gold);padding:6px 14px;border-radius:20px;font-weight:700}
+.screen{height:8px;background:linear-gradient(90deg,transparent,var(--gold),transparent);border-radius:50%;margin:14px auto 22px;width:70%;box-shadow:0 8px 24px #e8b84a66}
+.row{display:flex;justify-content:center;align-items:center;gap:5px;margin:5px 0}
+.rl{width:18px;color:var(--mu);font-size:12px}
+.seat{width:26px;height:26px;border-radius:6px 6px 3px 3px;border:0;background:#4f7bea;cursor:pointer;font-size:9px;color:#fff}
+.seat.t{background:#262f5c;cursor:not-allowed;color:#262f5c}.seat.s{background:var(--gold);color:#111}.gap{margin-left:22px}
+.tabs button{background:none;border:0;border-bottom:2px solid transparent;color:var(--mu);padding:8px 14px;cursor:pointer;font-size:16px}
+.tabs .on{color:var(--gold);border-color:var(--gold)}
+.tk{background:#f2f5ff;color:#111a3a;max-width:420px;margin:16px auto;border-radius:14px;overflow:hidden;border:2px dashed #2f4fc0}
+.tk h2{margin:0;background:#0a1440;color:var(--gold);text-align:center;padding:14px;letter-spacing:3px}
+.tk .b{padding:16px}.tk .r{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px dotted #bbb;font-size:14px}
+.tk .r b{text-align:right}.tk .f{text-align:center;font-weight:700;background:#0a1440;color:var(--gold);padding:12px;font-size:18px}
+.err{color:#ff7a8a;font-size:13px;margin:4px 0}.muted{color:var(--mu)}
+</style></head><body><div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<script type="text/babel">
+const {useState,useEffect,useRef}=React;
+const PRICE=15,TK='vgn_token';
+const getTok=()=>{try{return localStorage.getItem(TK)}catch(e){return null}};
+const setTok=t=>{try{t?localStorage.setItem(TK,t):localStorage.removeItem(TK)}catch(e){}};
+async function api(path,method='GET',body){
+  const h={'Content-Type':'application/json'},t=getTok();if(t)h.Authorization='Bearer '+t;
+  let r;try{r=await fetch('/api'+path,{method,headers:h,body:body?JSON.stringify(body):undefined})}catch(e){throw Object.assign(new Error('Cannot reach server. Check your connection.'),{status:0})}
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok)throw Object.assign(new Error(j.error||'Something went wrong.'),{status:r.status});
+  return j;}
+const rnd=s=>()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+const hash=s=>{let h=7;for(const c of s)h=Math.imul(h,31)+c.charCodeAt(0)|0;return h};
+const fmt=d=>new Date(d).toLocaleString('en-IN',{dateStyle:'medium',timeStyle:'short'});
+const addD=(s,n)=>{const d=new Date(s+'T00:00:00Z');d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};
+const days=[0,1,2,3].map(i=>{const d=new Date();d.setDate(d.getDate()+i);return d.toISOString().slice(0,10)});
+const fakeposter=n=>`linear-gradient(160deg,hsl(${200+Math.abs(hash(n))%80},65%,34%),#060a1f)`;
+const Pst=({p,n,h})=><div style={{height:h,width:h*0.68,flexShrink:0,borderRadius:8,backgroundImage:p?`url("${p}")`:fakeposter(n),backgroundSize:'cover',backgroundPosition:'center',display:'flex',alignItems:'flex-end',padding:6,fontWeight:700,fontSize:12,color:'#fff',boxShadow:'0 4px 14px #0006'}}>{!p&&n}</div>;
+
+function Scene({i,show}){
+  const h=[225,240,215,258][i],r=rnd(i+3);
+  return <svg viewBox="0 0 800 500" preserveAspectRatio="xMidYMid slice" style={{opacity:show?1:0}}>
+    <defs><linearGradient id={'g'+i} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={`hsl(${h},70%,18%)`}/><stop offset="1" stopColor="#040719"/></linearGradient>
+    <radialGradient id={'l'+i}><stop offset="0" stopColor="#ffe9a8"/><stop offset="1" stopColor="#ffe9a800"/></radialGradient></defs>
+    <rect width="800" height="500" fill={`url(#g${i})`}/>
+    <path d="M0 0H170Q120 200 40 500H0ZM800 0H630Q680 200 760 500H800Z" fill="#1c3a9e"/>
+    <rect x="200" y="90" width="400" height="190" rx="6" fill={`hsl(${h},60%,${40+r()*20}%)`}/>
+    <rect x="200" y="90" width="400" height="190" rx="6" fill="#fff" opacity=".12"/>
+    {[200,400,600].map(x=><g key={x}><circle cx={x} cy="40" r="50" fill={`url(#l${i})`}/><circle cx={x} cy="40" r="6" fill="#ffe9a8"/></g>)}
+    {Array.from({length:7}).map((_,k)=><g key={k}>{Array.from({length:14}).map((_,j)=><rect key={j} x={60+j*48+k*2} y={310+k*24} width="34" height="20" rx="6" fill={`hsl(${h},60%,${14+k*2}%)`} stroke="#e8b84a33"/>)}</g>)}
+  </svg>}
+
+function Welcome({onRole}){
+  const [i,setI]=useState(0),[pop,setPop]=useState(false);
+  useEffect(()=>{const t=setInterval(()=>setI(x=>(x+1)%4),4000);return()=>clearInterval(t)},[]);
+  return <div className="hero">{[0,1,2,3].map(k=><Scene key={k} i={k} show={k===i}/>)}
+    <div className="ov"><div className="muted" style={{letterSpacing:6}}>★ WELCOME TO ★</div>
+      <h1>VGN CINEMAS</h1><p>GRANDLY · THE FINEST CINEMA EXPERIENCE</p>
+      <button className="btn" style={{fontSize:18,padding:'14px 40px'}} onClick={()=>setPop(true)}>Enter the Theatre</button></div>
+    {pop&&<div className="modal"><div className="box"><h2 style={{color:'var(--gold)',marginTop:0}}>Who are you?</h2>
+      <p className="muted">Are you an Audience member or a Theater Owner?</p>
+      <button className="btn" style={{width:'100%',marginBottom:10}} onClick={()=>onRole('audience')}>🎟 I’m Audience</button>
+      <button className="btn o" style={{width:'100%'}} onClick={()=>onRole('owner')}>🎭 I’m a Theater Owner</button>
+      <p><a href="#" className="muted" onClick={e=>{e.preventDefault();setPop(false)}}>Cancel</a></p></div></div>}
+  </div>}
+
+function Auth({role,onIn,onBack}){
+  const [mode,setMode]=useState('login'),[u,setU]=useState(''),[p,setP]=useState(''),[e,setE]=useState('');
+  const [busy,setBusy]=useState(false);
+  const go=async()=>{
+    const n=u.trim();if(!n||!p)return setE('Enter username and password.');
+    setBusy(true);setE('');
+    try{const r=await api(mode==='signup'?'/signup':'/login','POST',{username:n,password:p,role});
+      setTok(r.token);onIn(r.user);}
+    catch(x){setE(x.message);setBusy(false)}
+  };
+  return <div className="wrap" style={{maxWidth:420,paddingTop:60}}><div className="card">
+    <div className="logo" style={{textAlign:'center'}}>VGN CINEMAS</div>
+    <h3 style={{textAlign:'center'}}>{role==='owner'?'Theater Owner':'Audience'} {mode==='login'?'Login':'Sign Up'}</h3>
+    <label>Username</label><input value={u} onChange={x=>setU(x.target.value)}/>
+    <label>Password</label><input type="password" value={p} onChange={x=>setP(x.target.value)} onKeyDown={x=>x.key==='Enter'&&go()}/>
+    {e&&<div className="err">{e}</div>}
+    <button className="btn" style={{width:'100%'}} disabled={busy} onClick={go}>{busy?'Please wait…':mode==='login'?'Login':'Create account'}</button>
+    {mode==='signup'&&role==='audience'&&<p className="muted" style={{fontSize:12}}>🎁 New members receive 1000 credits in their Credit Bank.</p>}
+    <p style={{textAlign:'center'}} className="muted">{mode==='login'?'New here? ':'Have an account? '}
+      <a href="#" style={{color:'var(--gold)'}} onClick={x=>{x.preventDefault();setE('');setMode(mode==='login'?'signup':'login')}}>{mode==='login'?'Sign up':'Login'}</a> · <a href="#" style={{color:'var(--mu)'}} onClick={x=>{x.preventDefault();onBack()}}>Back</a></p>
+  </div></div>}
+
+function QR({text}){const r=useRef();useEffect(()=>{r.current.innerHTML='';try{new QRCode(r.current,{text,width:130,height:130})}catch(e){}},[text]);return <div ref={r} style={{display:'inline-block'}}/>}
+
+function Ticket({t}){return <div className="tk"><h2>🎬 VGN CINEMAS</h2><div style={{display:'flex',justifyContent:'center',padding:'14px 0 0'}}><Pst p={t.poster} n={t.movie} h={170}/></div><div className="b">
+  {[['Movie',t.movie],['Screen',t.screen],['Timing',t.time],['Seats Selected',`${t.seats.length} (${t.seats.join(', ')})`],['Show Date & Time',`${t.date} · ${t.time}`],['Ticket Booked On',fmt(t.booked)],['Total Credits',t.total]].map(([a,b])=><div className="r" key={a}><span>{a}</span><b>{b}</b></div>)}
+  <div style={{textAlign:'center',marginTop:14}}><QR text={`VGN|${t.id}|${t.movie}|${t.screen}|${t.date} ${t.time}|${t.seats.join(',')}`}/></div></div>
+  <div className="f">Enjoy the movie</div></div>}
+
+function Audience({shows,me,setMe,bookings,setBookings,logout}){
+  const user=me.u,[real,setReal]=useState([]),[busy,setBusy]=useState(false);
+  const [tab,setTab]=useState('shows'),[q,setQ]=useState(''),[mv,setMv]=useState(null),[pick,setPick]=useState(null),[seats,setSeats]=useState([]),[step,setStep]=useState('browse'),[date,setDate]=useState(days[0]),[ph,setPh]=useState(''),[em,setEm]=useState(''),[err,setErr]=useState(''),[tk,setTk]=useState(null);
+  const movies=Object.values(shows.reduce((a,s)=>{const k=s.name.trim().toLowerCase();a[k]=a[k]?(a[k].poster?a[k]:{...a[k],poster:s.poster}):s;return a},{})).filter(s=>s.name.toLowerCase().includes(q.toLowerCase()));
+  const key=p=>`${p.show.id}|${date}|${p.time}`;
+  const taken=p=>{const r=rnd(hash(key(p))),s=new Set();'ABCDEFGH'.split('').forEach(l=>{for(let c=1;c<=10;c++)if(r()<.25)s.add(l+c)});real.forEach(x=>s.add(x));return s};
+  const pickTime=async(sh,t)=>{setErr('');try{const r=await api(`/shows/${sh.id}/taken?date=${date}&time=${encodeURIComponent(t)}`);setReal(r.seats)}catch(e){setReal([])}setPick({show:sh,time:t});setSeats([]);setStep('seats')};
+  const total=seats.length*PRICE;
+  const reset=()=>{setStep('browse');setMv(null);setPick(null);setSeats([]);setErr('')};
+  const confirm=async()=>{
+    if(!/^\d{10}$/.test(ph))return setErr('Enter a valid 10-digit phone number.');
+    if(!/^\S+@\S+\.\S+$/.test(em))return setErr('Enter a valid email.');
+    if(me.credits<total)return setErr('Not enough credits.');
+    setBusy(true);setErr('');
+    try{const r=await api('/bookings','POST',{showId:pick.show.id,date,time:pick.time,seats,phone:ph,email:em});
+      setMe({...me,credits:r.credits});setBookings([r.booking,...bookings]);setTk(r.booking);setStep('ticket');}
+    catch(x){if(x.status===409){alert(x.message);await pickTime(pick.show,pick.time)}else setErr(x.message)}
+    setBusy(false);};
+  const Head=<div className="top"><div className="logo">VGN CINEMAS</div><div style={{display:'flex',gap:10,alignItems:'center',flexWrap:'wrap'}}>
+    <span className="bal">💰 Credit Bank: {me.credits}</span><span className="muted">Hi, {user}</span><button className="btn o" onClick={logout}>Logout</button></div></div>;
+  const mine=bookings;
+  let body;
+  if(step==='ticket')body=<div><h2 style={{textAlign:'center',color:'var(--gold)'}}>Booking Confirmed ✔</h2><Ticket t={tk}/><div style={{textAlign:'center'}}><button className="btn" onClick={()=>{reset();setTab('shows')}}>Back to Shows</button></div></div>;
+  else if(step==='auth')body=<div style={{maxWidth:420,margin:'0 auto'}}><h2>Authentication</h2><div className="card">
+    <div style={{display:'flex',gap:12,alignItems:'center',marginBottom:10}}><Pst p={pick.show.poster} n={pick.show.name} h={110}/><div><b>{pick.show.name}</b><br/><span className="muted">{pick.time} · Seats: {seats.join(', ')}</span></div></div>
+    <label>Phone number</label><input value={ph} maxLength={10} onChange={e=>setPh(e.target.value.replace(/\D/g,''))}/>
+    <label>Email</label><input value={em} onChange={e=>setEm(e.target.value)}/>
+    <p>Credit balance: <b style={{color:'var(--gold)'}}>{me.credits}</b><br/>To pay: <b>{total}</b> · Balance after: <b>{me.credits-total}</b></p>
+    {err&&<div className="err">{err}</div>}
+    <button className="btn" style={{width:'100%'}} disabled={busy} onClick={confirm}>{busy?'Processing…':`Confirm & Pay ${total} credits`}</button>
+    <p><a href="#" className="muted" onClick={e=>{e.preventDefault();setStep('seats')}}>← Back to seats</a></p></div></div>;
+  else if(step==='seats'){const tk2=taken(pick);body=<div><a href="#" className="muted" onClick={e=>{e.preventDefault();setStep('theaters');setSeats([])}}>← Back</a>
+    <div style={{display:'flex',gap:14,alignItems:'center',margin:'10px 0'}}><Pst p={pick.show.poster} n={pick.show.name} h={130}/><div><h2 style={{margin:0}}>{pick.show.name}</h2><p className="muted">{pick.show.owner} · {pick.show.screenName} ({pick.show.screen}) · {date} · {pick.time}</p></div></div>
+    <div className="card"><div className="screen"/><div className="muted" style={{textAlign:'center',fontSize:11,marginBottom:10}}>SCREEN THIS WAY</div>
+    {'ABCDEFGH'.split('').map(l=><div className="row" key={l}><span className="rl">{l}</span>{Array.from({length:10},(_,i)=>{const id=l+(i+1),t=tk2.has(id),s=seats.includes(id);
+      return <button key={id} disabled={t} className={`seat ${t?'t':''} ${s?'s':''} ${i===5?'gap':''}`} onClick={()=>setSeats(s?seats.filter(x=>x!==id):[...seats,id])}>{i+1}</button>})}</div>)}
+    <div style={{textAlign:'center',marginTop:12,fontSize:12}} className="muted">🟩 Available &nbsp; 🟨 Selected &nbsp; ⬛ Booked</div></div>
+    <div className="card" style={{display:'flex',justifyContent:'space-between',alignItems:'center',flexWrap:'wrap',gap:10}}>
+      <div>Seats: <b>{seats.length?[...seats].sort().join(', '):'none'}</b><br/>{seats.length} × {PRICE} = <b style={{color:'var(--gold)',fontSize:20}}>{total} credits</b><br/><span className="muted">Balance: {me.credits}</span></div>
+      <button className="btn" disabled={!seats.length||total>me.credits} onClick={()=>{setErr('');setStep('auth')}}>Book Seats</button></div>
+    {total>me.credits&&<div className="err">Not enough credits for this selection.</div>}</div>}
+  else if(step==='theaters'){const list=shows.filter(s=>s.name.trim().toLowerCase()===mv.name.trim().toLowerCase());const st=list.map(x=>x.release||days[0]).sort()[0],opts=Array.from({length:5},(_,i)=>addD(st<days[0]?days[0]:st,i));
+    body=<div><a href="#" className="muted" onClick={e=>{e.preventDefault();reset()}}>← All movies</a><div style={{display:'flex',gap:14,alignItems:'center'}}><Pst p={mv.poster} n={mv.name} h={190}/><h2>{mv.name}</h2></div>
+    <p className="muted">{mv.cert} · {mv.runtime} min{mv.release>days[0]?` · Premieres ${mv.release}`:''}</p><label>Show date</label><select value={date} onChange={e=>setDate(e.target.value)}>{opts.map(d=><option key={d} value={d}>{d}{d===st?' (Premiere)':''}</option>)}</select>{st>days[0]&&list.some(x=>days[0]>=(x.open||days[0]))&&<div className="card" style={{borderColor:'var(--gold)'}}>✅ Bookings are open. Today ({days[0]}) you can book tickets for the {st} premiere or any later date.</div>}
+    {list.map(s=><div className="card" key={s.id}><b style={{fontSize:18}}>{s.owner}</b> <span className="tag">{s.screen}</span><span className="tag">{s.screenName}</span>
+      <div style={{marginTop:8}}>{s.times.map(t=><button key={t} disabled={date<(s.release||days[0])||days[0]<(s.open||days[0])} className="chip" onClick={()=>pickTime(s,t)}>{t}</button>)}{days[0]<(s.open||days[0])?<div className="err">🔒 Bookings open on {s.open}.</div>:date<(s.release||days[0])&&<div className="muted" style={{fontSize:12}}>🎬 Premieres {s.release} — pick that date or later to book.</div>}</div></div>)}</div>}
+  else body=<div className="wrap" style={{padding:0}}><div className="tabs"><button className={tab==='shows'?'on':''} onClick={()=>setTab('shows')}>Shows Running</button><button className={tab==='hist'?'on':''} onClick={()=>setTab('hist')}>Booking History</button></div>
+    {tab==='shows'?<><input placeholder="🔍 Search movies…" value={q} onChange={e=>setQ(e.target.value)} style={{marginTop:14}}/>
+      {!movies.length&&<p className="muted">No shows running{q?' for that search':' yet. Theater owners will add shows soon.'}</p>}
+      <div className="grid">{movies.map(s=><div className="mv" key={s.id} onClick={()=>{const fr=shows.filter(x=>x.name.trim().toLowerCase()===s.name.trim().toLowerCase()).map(x=>x.release||days[0]).sort()[0];setDate(fr<days[0]?days[0]:fr);setMv(s);setStep('theaters')}}>
+        <div className="ps" style={{backgroundImage:s.poster?`url("${s.poster}")`:fakeposter(s.name)}}>{!s.poster&&s.name}</div>
+        <div className="in"><b style={{color:'var(--tx)'}}>{s.name}</b><br/>{s.cert} · {s.runtime} min{s.open>days[0]?<><br/><span style={{color:'var(--gold)'}}>🔒 Bookings open {s.open}</span></>:s.release>days[0]&&<><br/><span style={{color:'var(--gold)'}}>🎟 Advance booking · {s.release}</span></>}</div></div>)}</div></>
+    :<div>{!mine.length&&<p className="muted">No bookings yet.</p>}{mine.map(b=><div className="card" key={b.id}><b>{b.movie}</b> <span className="tag">{b.id}</span><br/><span className="muted">{b.screen} · {b.date} {b.time} · Seats {b.seats.join(', ')} · {b.total} credits<br/>Booked {fmt(b.booked)}</span><br/><button className="btn o" style={{marginTop:8,padding:'4px 12px'}} onClick={()=>{setTk(b);setStep('ticket')}}>View e-ticket</button></div>)}</div>}</div>;
+  return <div>{Head}<div className="wrap">{body}</div></div>}
+
+function Owner({shows,setShows,user,logout}){
+  const [tab,setTab]=useState('add'),[f,setF]=useState({name:'',runtime:'',cert:'U (All ages)',poster:'',times:[],screen:'Single',release:days[0],open:days[0]}),[t,setT]=useState(''),[m,setM]=useState(''),[cf,setCf]=useState(null);
+  const mine=shows.filter(s=>s.owner===user);
+  const up=e=>{const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const sc=Math.min(1,400/im.width),c=document.createElement('canvas');c.width=im.width*sc;c.height=im.height*sc;c.getContext('2d').drawImage(im,0,0,c.width,c.height);setF(x=>({...x,poster:c.toDataURL('image/jpeg',0.8)}))};im.src=r.result};r.readAsDataURL(file)};
+  const add=async()=>{
+    if(!f.name.trim()||!f.runtime||!f.times.length||!f.release||!f.open)return setM('⚠ Movie name, runtime and at least one show time are required.');
+    if(f.open>f.release)return setM('⚠ Booking open date must be on or before the premiere date.');
+    try{const s=await api('/shows','POST',{...f,name:f.name.trim()});
+      setShows([...shows,s]);setF({name:'',runtime:'',cert:'U (All ages)',poster:'',times:[],screen:'Single',release:days[0],open:days[0]});setM('✔ Show added. Bookings open on '+s.open+' for the '+s.release+' premiere.');}
+    catch(x){setM('⚠ '+x.message)}};
+  const del=async s=>{try{await api('/shows/'+s.id,'DELETE');setShows(shows.filter(x=>x.id!==s.id));setCf(null);setM('Show removed.')}catch(x){setM('⚠ '+x.message)}};
+  return <div><div className="top"><div className="logo">VGN CINEMAS · OWNER</div><div><span className="muted">{user} </span><button className="btn o" onClick={logout}>Logout</button></div></div>
+  <div className="wrap" style={{maxWidth:560}}><div className="tabs"><button className={tab==='add'?'on':''} onClick={()=>{setTab('add');setM('')}}>Add Show</button><button className={tab==='rm'?'on':''} onClick={()=>{setTab('rm');setM('')}}>Remove Show</button></div>
+  {tab==='add'?<div className="card">
+    <label>Movie name</label><input value={f.name} onChange={e=>setF({...f,name:e.target.value})}/>
+    <label>Movie runtime (minutes)</label><input type="number" min="1" value={f.runtime} onChange={e=>setF({...f,runtime:e.target.value})}/>
+    <label>Censor certificate (with age)</label><select value={f.cert} onChange={e=>setF({...f,cert:e.target.value})}>{['U (All ages)','UA 7+','UA 13+','UA 16+','A (18+)'].map(c=><option key={c}>{c}</option>)}</select>
+    <label>Movie poster (upload image)</label><input type="file" accept="image/*" onChange={up}/>{f.poster&&<img src={f.poster} alt="" style={{height:110,borderRadius:8,marginBottom:10}}/>}
+    <label>Bookings open on (audience can book from this date)</label><input type="date" value={f.open} min={days[0]} onChange={e=>setF({...f,open:e.target.value})}/><label>Premiere / release date (first show date)</label><input type="date" value={f.release} min={days[0]} onChange={e=>setF({...f,release:e.target.value})}/><label>Show times</label><div style={{display:'flex',gap:8}}><input type="time" value={t} onChange={e=>setT(e.target.value)}/><button className="btn" style={{height:42,marginTop:6}} onClick={()=>{if(t&&!f.times.includes(t)){setF({...f,times:[...f.times,t].sort()});setT('')}}}>Add</button></div>
+    <div>{f.times.map(x=><button key={x} className="chip on" onClick={()=>setF({...f,times:f.times.filter(y=>y!==x)})}>{x} ✕</button>)}</div>
+    <label>Screen type</label><select value={f.screen} onChange={e=>setF({...f,screen:e.target.value})}>{['Single','Multiplex','IMAX','PXL','EPIQ'].map(c=><option key={c}>{c}</option>)}</select>
+    {m&&<div className={m[0]==='✔'?'':'err'} style={{margin:'6px 0'}}>{m}</div>}
+    <button className="btn" style={{width:'100%'}} onClick={add}>Save Show</button></div>
+  :<div>{m&&<p>{m}</p>}{!mine.length&&<p className="muted">You haven’t added any shows.</p>}{mine.map(s=><div className="card" key={s.id} style={{display:'flex',justifyContent:'space-between',gap:10,alignItems:'center'}}>
+    <div><b>{s.name}</b><br/><span className="muted">{s.screen} · {s.screenName} · {s.cert} · {s.runtime} min<br/>🎟 Bookings open {s.open||'now'} · Premiere {s.release||'—'} · {s.times.join(' · ')}</span></div>
+    {cf===s.id?<div style={{display:'flex',gap:6}}><button className="btn" style={{background:'var(--red)',color:'#fff'}} onClick={()=>del(s)}>Confirm</button><button className="btn o" onClick={()=>setCf(null)}>Cancel</button></div>:<button className="btn" style={{background:'var(--red)',color:'#fff'}} onClick={()=>setCf(s.id)}>Remove</button>}</div>)}</div>}
+  </div></div>}
+
+function App(){
+  const [me,setMe]=useState(null),[role,setRole]=useState(null),[shows,setShows]=useState([]),[bookings,setBookings]=useState([]),[ready,setReady]=useState(false);
+  const loadFor=async u=>{setMe(u);setRole(u.role);if(u.role==='audience')try{setBookings(await api('/bookings'))}catch(e){}};
+  useEffect(()=>{(async()=>{
+    try{setShows(await api('/shows'))}catch(e){}
+    if(getTok())try{const r=await api('/me');await loadFor(r.user)}catch(e){if(e.status===401)setTok(null)}
+    setReady(true)})()},[]);
+  const out=()=>{setTok(null);setMe(null);setRole(null);setBookings([])};
+  const onIn=async u=>{try{setShows(await api('/shows'))}catch(e){}await loadFor(u)};
+  if(!ready)return <div className="wrap muted" style={{paddingTop:80,textAlign:'center'}}>Loading VGN Cinemas…</div>;
+  if(!role)return <Welcome onRole={setRole}/>;
+  if(!me)return <Auth role={role} onIn={onIn} onBack={()=>setRole(null)}/>;
+  return role==='owner'?<Owner shows={shows} setShows={setShows} user={me.u} logout={out}/>:<Audience shows={shows} me={me} setMe={setMe} bookings={bookings} setBookings={setBookings} logout={out}/>;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script></body></html>
